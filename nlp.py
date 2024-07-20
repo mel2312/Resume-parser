@@ -1,6 +1,7 @@
+from json import encoder
+
 import pandas as pd
 import re
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
@@ -38,8 +39,18 @@ tfidf_vectorizer = TfidfVectorizer(max_features=3000)
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['tokenized_text'])
 print(data['Category'].value_counts())
 
+#label encoding
 labelencoder = LabelEncoder()
 
 data['Category'] = labelencoder.fit_transform(data['Category'])
 
 print(data.dtypes)
+# Get the mapping dictionary
+label_to_value = {label: idx for idx, label in enumerate(labelencoder.classes_)}
+
+
+# Print the mapping
+
+print("\n\nLabel to Value Mapping:")
+for label, value in label_to_value.items():
+    print(f"{label}: {value}")
