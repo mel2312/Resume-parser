@@ -5,6 +5,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
 
 data = pd.read_csv('UpdatedResumeDataSet.csv')
 
@@ -32,8 +33,13 @@ def tokenize_and_remove_stopwords(text):
 data['tokenized_text'] = data['cleaned_resume'].apply(tokenize_and_remove_stopwords)
 assert data['tokenized_text'].apply(lambda x: isinstance(x, str)).all(), "Not all processed resumes are strings"
 
-print(type(data['tokenized_text']))
 
 tfidf_vectorizer = TfidfVectorizer(max_features=3000)
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['tokenized_text'])
-print(tfidf_vectorizer.vocabulary_)
+print(data['Category'].value_counts())
+
+labelencoder = LabelEncoder()
+
+data['Category'] = labelencoder.fit_transform(data['Category'])
+
+print(data.dtypes)
