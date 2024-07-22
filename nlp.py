@@ -1,5 +1,3 @@
-from json import encoder
-
 import pandas as pd
 import re
 from nltk.corpus import stopwords
@@ -7,6 +5,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 
 data = pd.read_csv('UpdatedResumeDataSet.csv')
 
@@ -54,3 +53,7 @@ label_to_value = {label: idx for idx, label in enumerate(labelencoder.classes_)}
 print("\n\nLabel to Value Mapping:")
 for label, value in label_to_value.items():
     print(f"{label}: {value}")
+
+X_train, X_test, y_train, y_test = train_test_split(tfidf_matrix, data['Category'], test_size=0.2, random_state=42)
+
+print(data['Category'].unique())
