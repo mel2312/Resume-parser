@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import re
 import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
@@ -57,6 +58,7 @@ print("\n\nLabel to Value Mapping:")
 for label, value in label_to_value.items():
     print(f"{label}: {value}")
 
+#train
 X_train, X_test, y_train, y_test = train_test_split(tfidf_matrix, data['Category'], test_size=0.2, random_state=42)
 
 print(data['Category'].unique())
@@ -65,5 +67,20 @@ knn = KNeighborsClassifier(n_neighbors=1)
 knn.fit(X_train, y_train)
 predictions = knn.predict(X_test)
 
+#check accuracy
 print("\n\n\n", classification_report(y_test,predictions))
 print("\n\n\n", confusion_matrix(y_test,predictions))
+
+error_rate = []
+for i in range(1,25):
+    knn = KNeighborsClassifier(n_neighbors=i)
+    knn.fit(X_train, y_train)
+    pred_i= knn.predict(X_test)
+    error_rate.append(np.mean(pred_i != y_test))
+
+plt.figure(figsize=(10,6))
+plt.plot(range(1,25),error_rate,color='blue',linestyle='dashed',marker='o',markerfacecolor='green',markersize=10)
+plt.title("Error Rate vs K-value")
+plt.xlabel("K-value")
+plt.ylabel("Error Rate")
+plt.show()
