@@ -84,3 +84,5 @@ plt.title("Error Rate vs K-value")
 plt.xlabel("K-value")
 plt.ylabel("Error Rate")
 plt.show()
+
+print("\n\n\n Best value are of K is from 1 to 3")
