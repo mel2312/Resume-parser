@@ -1,11 +1,14 @@
 import pandas as pd
 import re
+import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 
 data = pd.read_csv('UpdatedResumeDataSet.csv')
 
@@ -57,3 +60,10 @@ for label, value in label_to_value.items():
 X_train, X_test, y_train, y_test = train_test_split(tfidf_matrix, data['Category'], test_size=0.2, random_state=42)
 
 print(data['Category'].unique())
+
+knn = KNeighborsClassifier(n_neighbors=1)
+knn.fit(X_train, y_train)
+predictions = knn.predict(X_test)
+
+print("\n\n\n", classification_report(y_test,predictions))
+print("\n\n\n", confusion_matrix(y_test,predictions))
